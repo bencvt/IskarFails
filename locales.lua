@@ -23,5 +23,21 @@ L["nobody"] = "NOBODY"
 local locale = GetLocale()
 if locale == "deDE" then
   L = LibStub("AceLocale-3.0"):NewLocale(..., locale)
-  -- no translation yet
+  L["announceChange"] = "Deine aktuelle Einstellung ist %s. Tippe %s ein, um dies zu ändern."
+  L["announceDefer"] = "%s kündigt Fehler an."
+  L["announceOff"] = "Fehlerankündigung ist deaktiviert."
+  L["announceRaid"] = "Fehler werden in den Schlachtzugs-Chat angekündigt."
+  L["announceSelf"] = "Fehlerankündigung nur zu dir selbst" -- Needs review
+  L["fail.conduit"] = "%s hat das Auge, %s hat den Schlachtzug getroffen. Nur die Person mit dem Auge kann den Zauber vom Wächter unterbrechen."
+  L["fail.corruption"] = "%s hat das Auge, %s hat den Schlachtzug getroffen. Der Tank des Rabens brauchte das Auge, um den Debuff zu verhindern."
+  L["fail.detonation"] = "%s hat das Auge, %s hat den Schlachtzug getroffen. Ein Heiler brauchte das Auge, um die Bombe des Priesters zu bannen."
+  L["fail.winds"] = "%s hat das Auge für %ss während %s." -- Needs review
+  L["help.1"] = "Version %s von %s"
+  L["help.2"] = "Deine aktuelle Einstellung ist %s. Um dies zu ändern, Tippe einen der:" -- Needs review
+  L["help.always"] = "Fehler werden ab Normal in den Schlachtzugs-Chat angekündigt und im Schlachtzugsbrowser zu dir" -- Needs review
+  L["help.off"] = "Fehler nicht ankündigen"
+  L["help.raid"] = "Fehler werden auf Normal oder höher in den Schlachtzugs-Chat angekündigt"
+  L["help.self"] = "Fehler werden auf Normal oder höher dir selbst angekündigt" -- Needs review
+  L["newerVersion"] = "Version %s ist verfügbar. Du benutzt momentan die Version %s."
+  L["nobody"] = "NIEMAND"
 end

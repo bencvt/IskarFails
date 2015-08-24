@@ -1,2 +1,5 @@
+v1.0.2:
+  - add German translation, Dankeschön @pas06
+
 v1.0.1:
   - initial release
