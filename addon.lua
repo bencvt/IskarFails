@@ -9,7 +9,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale(A.NAME)
 
 -- GLOBALS: LibStub, SLASH_ISKARFAILS1
 local date, pairs, print, format, gsub, random, select, strlower, strsplit, time, tonumber, wipe = date, pairs, print, format, gsub, random, select, strlower, strsplit, time, tonumber, wipe
-local GetSpellLink, InCombatLockdown, IsInRaid, RegisterAddonMessagePrefix, SendAddonMessage, SendChatMessage, UnitExists, UnitIsUnit = GetSpellLink, InCombatLockdown, IsInRaid, RegisterAddonMessagePrefix, SendAddonMessage, SendChatMessage, UnitExists, UnitIsUnit
+local GetSpellLink, InCombatLockdown, IsInRaid, RegisterAddonMessagePrefix, SendAddonMessage, SendChatMessage, UnitExists, UnitIsDead, UnitIsUnit = GetSpellLink, InCombatLockdown, IsInRaid, RegisterAddonMessagePrefix, SendAddonMessage, SendChatMessage, UnitExists, UnitIsDead, UnitIsUnit
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
 local PREFIX = "ISKARFAILS"
@@ -21,10 +21,10 @@ local SPELLID_DETONATION = 181748
 local SPELLIDS_CORRUPTION = {[181824]=true, [187990]=true}
 local SPELLIDS_CONDUIT = {[181827]=true, [187998]=true}
 
+L["fail.winds"] = "{rt6} "..L["fail.winds"]
 L["fail.detonation"] = "{rt7} "..L["fail.detonation"]
 L["fail.conduit"] = "{rt1} "..L["fail.conduit"]
-L["fail.corruption"] = "{rt2} "..L["fail.corruption"]
-L["fail.winds"] = "{rt6} "..L["fail.winds"]
+L["fail.corruption"] = "{rt8} "..L["fail.corruption"]
 
 A.private = {
   db = false,
@@ -34,10 +34,10 @@ A.private = {
   someoneElseAnnouncingTimer = false,
   standby = true,
   eyeHolder = L["nobody"],
-  detonationDone = 0,
   windsVictims = {},
   windsTimer = false,
   windsSeconds = 0,
+  detonationDone = 0, -- time() when the first SPELL_DAMAGE event occurred
   isRaidFinder = false,
 }
 local R = A.private
@@ -107,7 +107,7 @@ end
 
 function A:ENCOUNTER_START(event, encounterID, encounterName, difficultyID, raidSize)
   if A.DEBUG >= 1 then A:Debugf("event=%s encounterID=%s encounterName=%s difficultyID=%s raidSize=%s", event, encounterID, encounterName, difficultyID, raidSize) end
-  R.isRaidFinder = (difficultyID == 17)
+  R.isRaidFinder = (difficultyID == DIFFICULTYID_RAIDFINDER)
   if encounterID == ENCOUNTERID_ISKAR then
     R.standby = false
     A:Reset()
@@ -216,7 +216,7 @@ end
 function A:NumWindsVictims()
   local count = 0
   for name, _ in pairs(R.windsVictims) do
-    if UnitExists(name) then
+    if UnitExists(name) and not UnitIsDead(name) then
       count = count + 1
     else
       R.windsVictims[name] = nil
