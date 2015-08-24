@@ -1,0 +1,13 @@
+## Interface: 60200
+## Title: IskarFails
+## Author: bencvt
+## Version: 1.0
+## Notes: Automatically call out people who are causing wipes on Shadow-Lord Iskar in Hellfire Citadel.
+## DefaultState: Enabled
+## SavedVariables: IskarFailsDB
+
+libs\libs.xml
+
+locales.lua
+
+addon.lua
