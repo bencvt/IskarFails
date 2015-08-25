@@ -31,6 +31,7 @@ A.private = {
   newerVersion = false,
   priority = random() + 0, -- increment by 1 for each major version
   someoneElseAnnouncing = false,
+  someoneElseAnnouncingPriority = 0,
   someoneElseAnnouncingTimer = false,
   standby = true,
   eyeHolder = L["nobody"],
@@ -96,7 +97,10 @@ function A:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
   elseif cmd == "p" then
     message = tonumber(message)
     if (message and message > R.priority) or not A:IsAnnouncingToRaid() then
-      R.someoneElseAnnouncing = sender
+      if message > R.someoneElseAnnouncingPriority then
+        R.someoneElseAnnouncingPriority = message
+        R.someoneElseAnnouncing = sender
+      end
       -- Use a short timer to ensure we only get the ultimate king of the hill.
       if not R.someoneElseAnnouncingTimer then
         R.someoneElseAnnouncingTimer = A:ScheduleTimer(A.PrintAnnounceMode, 2.5)
@@ -176,6 +180,7 @@ end
 
 function A:Reset()
   R.someoneElseAnnouncing = false
+  R.someoneElseAnnouncingPriority = 0
   if R.someoneElseAnnouncingTimer then
     A:CancelTimer(R.someoneElseAnnouncingTimer)
   end
